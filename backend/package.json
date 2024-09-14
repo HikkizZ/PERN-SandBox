@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Backend server for the StackPERN-Sandbox project using Node.js, Express, and PostgreSQL.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
     "start": "nodemon server.js",
