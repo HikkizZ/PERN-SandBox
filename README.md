@@ -39,7 +39,7 @@ StackPERN-SandBox/
 
 El backend de este proyecto está construido utilizando Node.js, Express y PostgreSQL como base de datos. Se han organizado las funcionalidades en controladores, rutas, servicios y modelos, siguiendo una estructura modular.
 
->[!INFO]
+>[!NOTE] INFO
 Para más detalles sobre el backend, consulta el README específico del backend.
 
 ## Fronend
