@@ -1,7 +1,7 @@
-import express from 'express'
-import indexRoutes from './routes/index.routes.js'
-import { PORT, HOST } from './config/configEnv.js'
-import { connectDB } from './config/configDB.js'
+import express, { json } from 'express'
+import indexRoutes from './src/routes/index.routes.js'
+import { PORT, HOST } from './src/config/configEnv.js'
+import { connectDB } from './src/config/configDB.js'
 
 //? This function is used to start the server.
 async function setupServer() { //* It creates an instance of the express app and listens on the specified port.
@@ -12,7 +12,7 @@ async function setupServer() { //* It creates an instance of the express app and
 
         app.use('/api/', indexRoutes)
 
-        app.listen(port, () => {
+        app.listen(PORT, () => {
             console.log(`Server running on: http://${HOST}:${PORT}/api`);
         })
     }catch (error){
