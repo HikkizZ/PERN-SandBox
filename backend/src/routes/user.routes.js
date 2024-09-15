@@ -5,8 +5,6 @@ import {
     createUser,
     getUsers,
     getUserById,
-    updateUser,
-    deleteUser
 } from '../controllers/user.controller.js';
 
 const router = Router(); //? It creates a new instance of the express router.
