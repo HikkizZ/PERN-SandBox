@@ -6,7 +6,7 @@ const UserSchema = new EntitySchema({
     tableName: "users",
     columns: {
         id: { //? This is the primary key of the table.
-            type: int,
+            type: 'int',
             primary: true,
             generated: true,
         },
