@@ -90,3 +90,75 @@ export async function createUser(req, res) {
         console.log("Error creating the user: ", error); // Print an error message.
     }
 };
+
+//? This function is used to update a user by its id in the database.
+export async function updateUser(req, res) {
+    try {
+        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
+
+        const userId = req.params.id; // Get the user id from the request parameters.
+
+        const user = await userRepositoy.findOne({ // Get the user by its id from the database.
+            where: { id: userId }
+        });
+
+        if (!userId) { // If the user id is not found.
+            return res.status(400).json({ // Return a message.
+                message: "User id not found.",
+                data: null
+            });
+        }
+
+        if (!user) { // If the user is not found.
+            return res.status(404).json({ // Return a message.
+                message: "User not found.",
+                data: null
+            });
+        }
+
+        const userUpdated = await userRepositoy.update(userId, req.body); // Update the user with the new data.
+
+        res.status(200).json({ // Return a message.
+            message: "User updated successfully.",
+            data: userUpdated
+        });
+    } catch (error) {
+        console.log("Error updating the user: ", error); // Print an error message.
+    }
+};
+
+//? This function is used to delete a user by its id from the database.
+export async function deleteUser(req, res) {
+    try {
+        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
+
+        const userId = req.params.id; // Get the user id from the request parameters.
+
+        const user = await userRepositoy.findOne({ // Get the user by its id from the database.
+            where: { id: userId }
+        });
+
+        if (!userId) { // If the user id is not found.
+            return res.status(400).json({ // Return a message.
+                message: "User id not found.",
+                data: null
+            });
+        }
+
+        if (!user) { // If the user is not found.
+            return res.status(404).json({ // Return a message.
+                message: "User not found.",
+                data: null
+            });
+        }
+
+        await userRepositoy.delete(userId); // Delete the user from the database.
+
+        res.status(200).json({ // Return a message.
+            message: "User deleted successfully.",
+            data: null
+        });
+    } catch (error) {
+        console.log("Error deleting the user: ", error); // Print an error message.
+    }
+};
