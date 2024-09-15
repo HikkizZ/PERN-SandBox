@@ -17,5 +17,5 @@ dotenv.config({ path: __envPath });
 export const PORT = process.env.PORT;
 export const HOST = process.env.HOST;
 export const DATABASE = process.env.DATABASE;
-export const BD_USERNAME = process.env.BD_USERNAME;
-export const BD_PASSWORD = process.env.BD_PASSWORD;
+export const DB_USERNAME = process.env.DB_USERNAME;
+export const DB_PASSWORD = process.env.DB_PASSWORD;
