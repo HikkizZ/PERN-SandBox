@@ -4,7 +4,25 @@ import { AppDataSource } from "../config/configDB.js"; //* Import the database c
 
 //? This function is used to get all the users from the database.
 export async function getUsers(req, res) {
+    try {
+        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
 
+        const users = await userRepositoy.find(); // Get all the users from the database.
+
+        if (!users) { // If there are no users.
+            return res.status(404).json({ // Return a message.
+                message: "Users not found.",
+                data: null
+            });
+        }
+
+        res.status(200).json({ // Return the users.
+            message: "Users found successfully.",
+            data: users
+        });
+    } catch (error) {
+        console.log("Error getting the users: ", error); // Print an error message.
+    }
 };
 
 //? This function is used to get a user by its id from the database.
