@@ -3,7 +3,8 @@ import indexRoutes from './routes/index.routes.js'
 import { PORT, HOST } from './config/configEnv.js'
 import { connectDB } from './config/configDB.js'
 
-async function setupServer() {
+//? This function is used to start the server.
+async function setupServer() { //* It creates an instance of the express app and listens on the specified port.
     try {
         const app = express()
 
@@ -19,6 +20,7 @@ async function setupServer() {
     }
 };
 
+//? This function is used to start the API. It connects to the database and starts the server.
 async function setupAPI() {
     try {
         await connectDB()
@@ -28,6 +30,6 @@ async function setupAPI() {
     }
 }
 
-setupAPI()
+setupAPI() //* It starts the API
     .then(() => console.log("=> API started successfully"))
     .catch((error) => console.log("Error starting the API: ", error));
