@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
     database: `${DATABASE}`, // The name of the relational database
     synchronize: true, // Indicates if database schema should be auto created on every application launch.
     logging: false, // Enable or disable logging of the SQL commands.
-    entities: ["src/entity/**/*.ts"], // Array of entities to load
+    entities: ["src/models/**/*.js"], // Array of entities to load
 });
 
 export async function connectDB() {
