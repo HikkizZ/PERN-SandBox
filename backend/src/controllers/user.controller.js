@@ -27,7 +27,37 @@ export async function getUsers(req, res) {
 
 //? This function is used to get a user by its id from the database.
 export async function getUserById(req, res) {
+    try {
+        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
 
+        const userId = req.params.id; // Get the user id from the request parameters.
+
+        const user = await userRepositoy.findOne({ // Get the user by its id from the database.
+            where: { id: userId }
+        });
+
+        if (!userId) { // If the user id is not found.
+            return res.status(400).json({ // Return a message.
+                message: "User id not found.",
+                data: null
+            });
+        }
+
+
+        if (!user) { // If the user is not found.
+            return res.status(404).json({ // Return a message.
+                message: "User not found.",
+                data: null
+            });
+        }
+
+        res.status(200).json({ // Return the user.
+            message: "User found successfully.",
+            data: user
+        });
+    } catch (error) {
+        console.log("Error getting the user: ", error); // Print an error message.
+    }
 }
 
 //? This function is used to create a new user in the database.
