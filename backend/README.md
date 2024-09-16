@@ -53,16 +53,16 @@ DB_PASSWORD = {contraseña de la base de datos}
 
 1. Clonar el repositorio:
 
-``` bash
-git clone https://github.com/HikkizZ/PERN-SandBox.git
-cd PERN-SandBox/backend/
-```
+    ``` bash
+    git clone https://github.com/HikkizZ/PERN-SandBox.git
+    cd PERN-SandBox/backend/
+    ```
 
 2. Instalar las dependencias:
 
-``` bash
-npm install
-```
+    ``` bash
+    npm install
+    ```
 
 3. Configurar la base de datos PostgreSQL y actualizar el archivo .env con las credenciales correctas.
 
