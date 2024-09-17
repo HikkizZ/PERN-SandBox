@@ -11,17 +11,17 @@ import {
 
 const router = Router(); //? It creates a new instance of the express router.
 
-//! http://localhost:3000/api/user
-router.post('/', createUser); //? It creates a new user. - Method: HTTP POST
-//! http://localhost:3000/api/user/all
-router.get('/all', getUsers); //? It gets all the users. - Method: HTTP GET
-//! http://localhost:3000/api/user/update/:id
-router.get('/:id', getUserById); //? It gets a user by id. - Method: HTTP GET
-//! http://localhost:3000/api/user/:id
-router.patch('/:id', updateUser); //? It updates a user by id. - Method: HTTP PATCH
-//! http://localhost:3000/api/user/:id
-router.delete('/:id', deleteUser); //? It deletes a user by id. - Method: HTTP DELETE
-
+router
+    //! http://localhost:3000/api/user/
+    .post('/', createUser) //? It creates a new user. - Method: HTTP POST
+    //! http://localhost:3000/api/user/all
+    .get('/all', getUsers) //? It gets all the users. - Method: HTTP GET
+    //! http://localhost:3000/api/user/update/:id
+    .get('/:id', getUserById) //? It gets a user by id. - Method: HTTP GET
+    //! http://localhost:3000/api/user/:id
+    .patch('/:id', updateUser) //? It updates a user by id. - Method: HTTP PATCH
+    //! http://localhost:3000/api/user/:id
+    .delete('/:id', deleteUser); //? It deletes a user by id. - Method: HTTP DELETE
 
 // Exporting the routers.
 export default router;
