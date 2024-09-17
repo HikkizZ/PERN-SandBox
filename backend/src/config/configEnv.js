@@ -19,3 +19,5 @@ export const HOST = process.env.HOST;
 export const DATABASE = process.env.DATABASE;
 export const DB_USERNAME = process.env.DB_USERNAME;
 export const DB_PASSWORD = process.env.DB_PASSWORD;
+export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET; //* ACCESS_TOKEN_SECRET is used to sign the JWT.
+export const cookieKey = process.env.cookieKey; //* cookieKey is used to sign the session ID cookie.
