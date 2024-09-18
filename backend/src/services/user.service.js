@@ -52,7 +52,7 @@ export async function getUsersService(){
     }
 }
 
-export async function updateUserService(user){
+export async function updateUserService(query, body){
     try {
         const { id, rut, email } = query; //? Destructuring the query object.
 
@@ -99,7 +99,7 @@ export async function updateUserService(user){
             where: [updateParams],
         });
 
-        const { password, ...userUpdated } = updatedUser; //? Destructuring the updated user object.
+        const { password, ...userUpdated } = userData; //? Destructuring the updated user object.
 
         return [userUpdated, null]; //? Returning the updated user data and null.
     } catch (error) {
