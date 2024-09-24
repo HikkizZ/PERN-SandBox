@@ -4,7 +4,7 @@ nos ayuda a encriptar y comparar contraseñas.
 */
 
 "use strict";
-import bcrypt from "bcrypt"; //* bcrypt is a password-hashing function.
+import bcrypt from "bcryptjs"; //* bcrypt is a password-hashing function.
 
 export async function encryptPassword(password){
     const salt = await bcrypt.genSalt(10); //* salt es un valor aleatorio que se añade a la contraseña antes de realizar el hash.
