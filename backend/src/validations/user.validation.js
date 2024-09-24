@@ -50,11 +50,11 @@ export const userQueryValidation = Joi.object({ //* This is the user query valid
             "string.max": "The rut must be at most 12 characters long.",
             "string.pattern.base": "The rut must be a valid rut. Example: 12.345.678-9 or 12345678-9.",
         })
-        .or("id", "email", "rut")
-        .messages({
-            "object.unknown": "The query must have at least one field: id, email, or rut.",
-            "object.missing": "The query must have at least one field: id, email, or rut.",
-        }), 
+})
+.or("id", "email", "rut")
+.messages({
+    "object.unknown": "The query must have at least one field: id, email, or rut.",
+    "object.missing": "The query must have at least one field: id, email, or rut.",
 });
 
 export const userBodyValidation = Joi.object({
