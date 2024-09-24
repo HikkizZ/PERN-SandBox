@@ -3,7 +3,7 @@ import { EntitySchema } from "typeorm";
 
 const UserSchema = new EntitySchema({
     name: "User",
-    tableName: "users",
+    tableName: "usersauth",
     columns: {
         id: { //? This is the primary key of the table.
             type: 'int',
@@ -38,12 +38,12 @@ const UserSchema = new EntitySchema({
             unique: true,
         },
         createAt: { //? This is the date when the user was created.
-            type: 'time with time zone',
+            type: 'timestamp with time zone',
             default: () => 'CURRENT_TIMESTAMP',
             nullable: false,
         },
         updateAt: { //? This is the date when the user was updated.
-            type: 'time with time zone',
+            type: 'timestamp with time zone',
             default: () => 'CURRENT_TIMESTAMP',
             onUpdate: 'CURRENT_TIMESTAMP', //! DON'T WORK. FIX IT.
             nullable: false,
