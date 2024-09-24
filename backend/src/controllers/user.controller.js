@@ -1,164 +1,93 @@
 "use strict";
-import User from "../models/user.model.js"; //* Import the user model
-import { AppDataSource } from "../config/configDB.js"; //* Import the database connection
+import {
+    getUserService,
+    getUsersService,
+    updateUserService,
+    deleteUserService,
+} from "../services/user.service.js";
+import {
+    handleSuccess,
+    handleErrorClient,
+    handleErrorServer
+} from "../handlers/responseHandlers.js";
+import {
+    userBodyValidation,
+    userQueryValidation
+} from "../validations/user.validation.js";
+
+//? This function is used to get a user by its id, rut, or email from the database.
+export async function getUser(req, res) {
+    try {
+        const { rut, id, email } = req.query; // Get the query parameters.
+
+        const { error } = userQueryValidation.validate({ rut, id, email }); // Validate the query parameters.
+
+        if (error) return handleErrorClient(res, 400, error.message); // If there is an error, return a message.
+
+        const [user, errorUser] = await getUserService({ rut, id, email }); // Get the user by parameters.
+
+        if (errorUser) return handleErrorServer(res, 404, errorUser); // If there is an error, return a message.
+
+        handleSuccess(res, 200, "User found seccessfully", user); // Return the user.
+    } catch (error) {
+        handleErrorServer(res, 500, "Internal server error.", error.message); // Return an error message.
+    }
+}
 
 //? This function is used to get all the users from the database.
 export async function getUsers(req, res) {
     try {
-        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
+        const [users, errorUsers] = await getUsersService(); // Get all the users from the database.
 
-        const users = await userRepositoy.find(); // Get all the users from the database.
+        if (errorUsers) return handleErrorServer(res, 404, errorUsers); // If there is an error, return a message.
 
-        if (!users) { // If there are no users.
-            return res.status(404).json({ // Return a message.
-                message: "Users not found.",
-                data: null
-            });
-        }
-
-        res.status(200).json({ // Return the users.
-            message: "Users found successfully.",
-            data: users
-        });
+        users.length === 0
+            ? handleErrorClient(res, 404, "Users not found.")
+            : handleSuccess(res, 200, "Users found successfully", users); // Return the users.
     } catch (error) {
-        console.log("Error getting the users: ", error); // Print an error message.
-    }
-};
-
-//? This function is used to get a user by its id from the database.
-export async function getUserById(req, res) {
-    try {
-        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
-
-        const userId = req.params.id; // Get the user id from the request parameters.
-
-        const user = await userRepositoy.findOne({ // Get the user by its id from the database.
-            where: { id: userId }
-        });
-
-        if (!userId) { // If the user id is not found.
-            return res.status(400).json({ // Return a message.
-                message: "User id not found.",
-                data: null
-            });
-        }
-
-
-        if (!user) { // If the user is not found.
-            return res.status(404).json({ // Return a message.
-                message: "User not found.",
-                data: null
-            });
-        }
-
-        res.status(200).json({ // Return the user.
-            message: "User found successfully.",
-            data: user
-        });
-    } catch (error) {
-        console.log("Error getting the user: ", error); // Print an error message.
-    }
-}
-
-//? This function is used to create a new user in the database.
-export async function createUser(req, res) {
-    try {
-        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
-
-        const user = req.body; // Get the user data from the request body.
-
-        if (!user) { // If the user is not created.
-            return res.status(400).json({ 
-                message: "Error creating the user. Please try again.",
-                data: null
-            }); // Return a message.
-        }
-
-        const newUser = userRepositoy.create({ // Create a new user with the user data.
-            name: user.name,
-            rut: user.rut,
-            email: user.email
-        });
-
-        const userSaved = await userRepositoy.save(newUser); // Save the new user in the database.
-
-        return res.status(201).json({ // Return a message.
-            message: "User created successfully.",
-            data: userSaved
-        });
-    } catch (error) {
-        console.log("Error creating the user: ", error); // Print an error message.
+        handleErrorServer(res, 500, "Internal server error.", error.message); // Return an error message.
     }
 };
 
 //? This function is used to update a user by its id in the database.
 export async function updateUser(req, res) {
     try {
-        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
+        const { id, rut, email } = req.query; // Get the query parameters.
+        const { body } = req; // Get the body parameters.
 
-        const userId = req.params.id; // Get the user id from the request parameters.
+        const { error: queryError } = userQueryValidation.validate({ id, rut, email }); // Validate the query parameters.
 
-        const user = await userRepositoy.findOne({ // Get the user by its id from the database.
-            where: { id: userId }
-        });
+        if (queryError) return handleErrorClient(res, 400, queryError.message); // If there is an error, return a message.
 
-        if (!userId) { // If the user id is not found.
-            return res.status(400).json({ // Return a message.
-                message: "User id not found.",
-                data: null
-            });
-        }
+        const { error: bodyError } = userBodyValidation.validate(body); // Validate the body parameters.
 
-        if (!user) { // If the user is not found.
-            return res.status(404).json({ // Return a message.
-                message: "User not found.",
-                data: null
-            });
-        }
+        if (bodyError) return handleErrorClient(res, 400, bodyError.message); // If there is an error, return a message.
 
-        const userUpdated = await userRepositoy.update(userId, req.body); // Update the user with the new data.
+        const [user, errorUser] = await updateUserService({ id, rut, email }, body); // Update the user by its id.
 
-        res.status(200).json({ // Return a message.
-            message: "User updated successfully.",
-            data: userUpdated
-        });
+        if (errorUser) return handleErrorServer(res, 400, errorUser); // If there is an error, return a message.
+
+        handleSuccess(res, 200, "User updated successfully", user); // Return the user.
     } catch (error) {
-        console.log("Error updating the user: ", error); // Print an error message.
+        handleErrorServer(res, 500, "Internal server error.", error.message); // Return an error message.
     }
 };
 
 //? This function is used to delete a user by its id from the database.
 export async function deleteUser(req, res) {
     try {
-        const userRepositoy = AppDataSource.getRepository(User); // Get the user repository. Instancia que permite interactuar con la base de datos.
+        const { rut, id, email } = req.query; // Get the query parameters.
 
-        const userId = req.params.id; // Get the user id from the request parameters.
+        const { error: queryError } = userQueryValidation.validate({ rut, id, email }); // Validate the query parameters.
 
-        const user = await userRepositoy.findOne({ // Get the user by its id from the database.
-            where: { id: userId }
-        });
+        if (queryError) return handleErrorClient(res, 400, queryError.message); // If there is an error, return a message.
 
-        if (!userId) { // If the user id is not found.
-            return res.status(400).json({ // Return a message.
-                message: "User id not found.",
-                data: null
-            });
-        }
+        const [userDeleted, errorUserDeleted] = await deleteUserService({ rut, id, email }); // Delete the user by its id.
 
-        if (!user) { // If the user is not found.
-            return res.status(404).json({ // Return a message.
-                message: "User not found.",
-                data: null
-            });
-        }
+        if (errorUserDeleted) return handleErrorServer(res, 404, errorUserDeleted); // If there is an error, return a message.
 
-        await userRepositoy.delete(userId); // Delete the user from the database.
-
-        res.status(200).json({ // Return a message.
-            message: "User deleted successfully.",
-            data: null
-        });
+        handleSuccess(res, 200, "User deleted successfully", userDeleted); // Return the user.
     } catch (error) {
-        console.log("Error deleting the user: ", error); // Print an error message.
+        handleErrorServer(res, 500, "Internal server error.", error.message); // Return an error message.
     }
 };
