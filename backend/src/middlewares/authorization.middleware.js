@@ -8,24 +8,24 @@ import {
     handleErrorServer
 } from "../helpers/responseHandlersjs";
 
-export async function isAdmin(req, res, next) {
+export async function isAdmin(req, res, next) { //? Function that checks if the user is an administrator.
     try {
         const userRepository = AppDataSource.getRepository(User);
 
         const userFound = await userRepository.findOne({ email: req.user.email });
 
-        if (!userFound) {
+        if (!userFound) { //? If the user is not found, return an error message.
             return handleErrorClient(res, 401, "User not found in the database.");
         }
 
         const rolUser = userFound.role;
 
-        if (rolUser === "admin") {
+        if (rolUser === "admin") { //? If the user is an administrator, call the next middleware.
             next();
             return;
         }
 
-        return handleErrorClient(res, 401, "You need to be an administrator to perform this action");
+        return handleErrorClient(res, 401, "You need to be an administrator to perform this action"); 
     } catch (error) {
         handleErrorServer(res, 500, "Internal server Middleware error. -> isAdmin()", error.message);
     }
