@@ -1,10 +1,11 @@
 import { Router } from "express";
+import { isAdmin } from "../middlewares/authorization.middleware.js";
+import { authenticateJWT } from "../middlewares/authentication.middleware.js";
 
 // Importing the functions from the user controller.
 import {
-    createUser,
     getUsers,
-    getUserById,
+    getUser,
     updateUser,
     deleteUser
 } from '../controllers/user.controller.js';
@@ -12,16 +13,18 @@ import {
 const router = Router(); //? It creates a new instance of the express router.
 
 router
+    .use(authenticateJWT) //? It authenticates the user using JWT.
+    .use(isAdmin); //? It checks if the user is an admin.
+
+router
     //! http://localhost:3000/api/user/
-    .post('/', createUser) //? It creates a new user. - Method: HTTP POST
-    //! http://localhost:3000/api/user/all
-    .get('/all', getUsers) //? It gets all the users. - Method: HTTP GET
-    //! http://localhost:3000/api/user/:id
-    .get('/:id', getUserById) //? It gets a user by id. - Method: HTTP GET
-    //! http://localhost:3000/api/user/:id
-    .patch('/:id', updateUser) //? It updates a user by id. - Method: HTTP PATCH
-    //! http://localhost:3000/api/user/:id
-    .delete('/:id', deleteUser); //? It deletes a user by id. - Method: HTTP DELETE
+    .get('/', getUsers) //? It gets all the users. - Method: HTTP GET
+    //! http://localhost:3000/api/user/detail/
+    .get('/detail/', getUser) //? It gets a user. - Method: HTTP GET
+    //! http://localhost:3000/api/user/detail/
+    .patch('/detail/', updateUser) //? It updates a user. - Method: HTTP PATCH
+    //! http://localhost:3000/api/user/detail/
+    .delete('/detail/', deleteUser); //? It deletes a user. - Method: HTTP DELETE
 
 // Exporting the routers.
 export default router;
