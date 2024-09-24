@@ -12,7 +12,7 @@ export async function isAdmin(req, res, next) { //? Function that checks if the 
     try {
         const userRepository = AppDataSource.getRepository(User);
 
-        const userFound = await userRepository.findOne({ where: { email: req.user.email } });
+        const userFound = await userRepository.findOne({ where : { email: req.user.email } });
 
         if (!userFound) { //? If the user is not found, return an error message.
             return handleErrorClient(res, 401, "User not found in the database.");
