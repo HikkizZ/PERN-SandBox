@@ -8,11 +8,10 @@ los usuarios en la base de datos.
 import User from "../models/user.model.js";
 import { AppDataSource } from "../config/configDB.js";
 import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper.js";
-import { query } from "express";
 
-export async function getUserService(){
+export async function getUserService(query){
     try {
-        const { rut, id, email } = query; //? Destructuring the query object.
+        const { id, rut, email } = query; //? Destructuring the query object.
 
         const userRepository = AppDataSource.getRepository(User); //? Getting the user repository.
 
@@ -108,7 +107,7 @@ export async function updateUserService(query, body){
     }
 }
 
-export async function deleteUserService(){
+export async function deleteUserService(query){
     try {
         const { id, rut, email } = query; //? Destructuring the query object.
 
