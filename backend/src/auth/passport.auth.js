@@ -1,7 +1,6 @@
 /*
-El passport.auth.js es un archivo que se encarga de la autenticación de los usuarios. En este archivo se configura
-la estrategia de autenticación, se definen las funciones de serialización y deserialización de los usuarios y
-se exporta un middleware que se encarga de proteger las rutas que requieren autenticación.
+El passport.auth.js es un archivo que se encarga de la autenticación de los usuarios. En este archivo se configura la
+estrategia de autenticación JWT. Se importa el passport y el modelo de usuario.
 */
 
 "use strict";
