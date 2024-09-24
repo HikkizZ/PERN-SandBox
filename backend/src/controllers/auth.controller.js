@@ -2,16 +2,16 @@
 import {
     loginService,
     registerService
-} from "../services/auth.service";
+} from "../services/auth.service.js";
 import {
     handleSuccess,
     handleErrorClient,
     handleErrorServer
-} from "../handlers/responseHandlers";
+} from "../handlers/responseHandlers.js";
 import {
     authValidation,
     registerValidation
-} from "../validations/auth.validation";
+} from "../validations/auth.validation.js";
 
 export async function login(req, res) { //? This function is used to login the user.
     try {
